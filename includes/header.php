@@ -6,10 +6,11 @@ ob_start(); // Prevent headers already sent error globally
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/functions.php';
 
-$base_url = "http://localhost/tiket"; // Sesuaikan jika ada perubahan path
+$base_url = "/(JGN DI UBAH UBAH)/tiket"; // Sesuaikan jika ada perubahan path
 $is_logged_in = isset($_SESSION['id_user']);
 $is_admin = $is_logged_in && $_SESSION['role'] === 'admin';
-$is_dashboard_layout = $is_logged_in && (strpos($_SERVER['REQUEST_URI'], '/admin/') !== false || strpos($_SERVER['REQUEST_URI'], '/user/') !== false);
+$is_petugas = $is_logged_in && $_SESSION['role'] === 'petugas';
+$is_dashboard_layout = $is_logged_in && (strpos($_SERVER['REQUEST_URI'], '/admin/') !== false || strpos($_SERVER['REQUEST_URI'], '/petugas/') !== false || strpos($_SERVER['REQUEST_URI'], '/user/') !== false);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -39,7 +40,7 @@ $is_dashboard_layout = $is_logged_in && (strpos($_SERVER['REQUEST_URI'], '/admin
             <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3 px-4 shadow-sm" style="z-index: 1030;">
                 <div class="container-fluid px-0">
                     <span class="navbar-brand mb-0 h1 fw-bold text-dark">
-                        <?= $is_admin ? 'Panel Administratif' : 'Portal Pengunjung' ?>
+                        <?= $is_admin ? 'Panel Administratif' : ($is_petugas ? 'Panel Petugas' : 'Portal Pengunjung') ?>
                     </span>
                     
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
@@ -47,32 +48,7 @@ $is_dashboard_layout = $is_logged_in && (strpos($_SERVER['REQUEST_URI'], '/admin
                     </button>
                     
                     <div class="collapse navbar-collapse" id="adminNavbar">
-                        <ul class="navbar-nav ms-auto align-items-center">
-                            <?php if($is_admin): ?>
-                            <!-- Tombol Shortcut Check-in Admin -->
-                            <li class="nav-item me-3">
-                                <a class="btn btn-danger rounded-pill px-4 shadow-sm" href="<?= $base_url ?>/admin/checkin/index.php">
-                                    <i class="bi bi-qr-code-scan me-1"></i> Validasi Check-in
-                                </a>
-                            </li>
-                            <?php else: ?>
-                            <!-- Tombol Shortcut Katalog Event User -->
-                            <li class="nav-item me-3">
-                                <a class="btn btn-primary rounded-pill px-4 shadow-sm" href="<?= $base_url ?>/user/my_tickets.php">
-                                    <i class="bi bi-ticket-detailed me-1"></i> Pesan Tiket Baru
-                                </a>
-                            </li>
-                            <?php endif; ?>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-person-circle me-1"></i> <?= htmlspecialchars($_SESSION['nama']) ?>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                                    <li><a class="dropdown-item" href="<?= $base_url ?>/auth/logout.php">Logout</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                        
                     </div>
                 </div>
             </nav>
@@ -101,6 +77,8 @@ $is_dashboard_layout = $is_logged_in && (strpos($_SERVER['REQUEST_URI'], '/admin
             <?php if($is_logged_in): ?>
                 <?php if($is_admin): ?>
                     <li class="nav-item me-2"><a class="nav-link btn btn-light rounded-pill px-3" href="<?= $base_url ?>/admin/index.php">Panel Admin</a></li>
+                <?php elseif($is_petugas): ?>
+                    <li class="nav-item me-2"><a class="nav-link btn btn-light rounded-pill px-3" href="<?= $base_url ?>/petugas/checkin/index.php">Panel Petugas</a></li>
                 <?php else: ?>
                     <li class="nav-item me-2"><a class="nav-link btn btn-light rounded-pill px-3" href="<?= $base_url ?>/user/index.php">Dashboard</a></li>
                 <?php endif; ?>

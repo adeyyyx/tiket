@@ -134,7 +134,7 @@ body.admin-mode {
         </div>
         <div class="text-truncate">
             <h6 class="mb-0 fw-bold text-truncate" style="font-size: 0.9rem;" title="<?= htmlspecialchars($_SESSION['nama'] ?? 'User') ?>"><?= htmlspecialchars($_SESSION['nama'] ?? 'User') ?></h6>
-            <small class="text-muted" style="font-size: 0.75rem;"><?= $is_admin ? 'Administrator' : 'Pengguna/Reguler' ?></small>
+            <small class="text-muted" style="font-size: 0.75rem;"><?= $is_admin ? 'Administrator' : ($is_petugas ? 'Petugas' : 'Pengguna/Reguler') ?></small>
         </div>
     </div>
 
@@ -147,24 +147,33 @@ body.admin-mode {
         </a>
 
         <div class="sidebar-title">Manajemen Data</div>
-        <a href="<?= $base_url ?>/admin/venue/index.php" class="nav-link <?= strpos($uri, '/admin/venue') !== false ? 'active' : '' ?>">
+        <a href="<?= $base_url ?>/admin/venue/index.php" class="nav-link <?= strpos($uri, '/admin/venue/index.php') !== false ? 'active' : '' ?>">
             <i class="bi bi-geo-alt"></i> Kelola Venue
         </a>
-        <a href="<?= $base_url ?>/admin/event/index.php" class="nav-link <?= strpos($uri, '/admin/event') !== false ? 'active' : '' ?>">
+        <a href="<?= $base_url ?>/admin/event/index.php" class="nav-link <?= strpos($uri, '/admin/event/index.php') !== false ? 'active' : '' ?>">
             <i class="bi bi-calendar-event"></i> Kelola Event
         </a>
-        <a href="<?= $base_url ?>/admin/tiket/index.php" class="nav-link <?= strpos($uri, '/admin/tiket') !== false ? 'active' : '' ?>">
+        <a href="<?= $base_url ?>/admin/tiket/index.php" class="nav-link <?= strpos($uri, '/admin/tiket/index.php') !== false ? 'active' : '' ?>">
             <i class="bi bi-ticket-perforated"></i> Kelola Tiket
         </a>
-        <a href="<?= $base_url ?>/admin/voucher/index.php" class="nav-link <?= strpos($uri, '/admin/voucher') !== false ? 'active' : '' ?>">
+        <a href="<?= $base_url ?>/admin/voucher/index.php" class="nav-link <?= strpos($uri, '/admin/voucher/index.php') !== false ? 'active' : '' ?>">
             <i class="bi bi-tags"></i> Kelola Voucher
         </a>
 
         <div class="sidebar-title">Laporan</div>
-        <a href="<?= $base_url ?>/admin/orders/index.php" class="nav-link <?= strpos($uri, '/admin/orders') !== false ? 'active' : '' ?>">
+        <a href="<?= $base_url ?>/admin/orders/index.php" class="nav-link <?= strpos($uri, '/admin/orders/index.php') !== false ? 'active' : '' ?>">
             <i class="bi bi-receipt"></i> Riwayat Pesanan
         </a>
         
+        <?php elseif($is_petugas): ?>
+        <div class="sidebar-title">Utama</div>
+        <a href="<?= $base_url ?>/petugas/checkin/index.php" class="nav-link <?= strpos($uri, '/petugas/checkin') !== false ? 'active' : '' ?>">
+            <i class="bi bi-qr-code-scan"></i> Validasi Check-in
+        </a>
+        <a href="<?= $base_url ?>/petugas/history/index.php" class="nav-link <?= strpos($uri, '/petugas/history') !== false ? 'active' : '' ?>">
+            <i class="bi bi-clock-history"></i> Riwayat Check-in
+        </a>
+
         <?php else: ?>
         <div class="sidebar-title">Eksplorasi</div>
         <a href="<?= $base_url ?>/user/index.php" class="nav-link <?= strpos($uri, '/user/index.php') !== false || strpos($uri, '/user/order.php') !== false || strpos($uri, '/user/pay.php') !== false ? 'active' : '' ?>">
@@ -181,9 +190,6 @@ body.admin-mode {
 
     <!-- Sidebar Footer -->
     <div class="sidebar-footer">
-        <a href="#" class="btn-sidebar-footer w-100">
-            <i class="bi bi-gear"></i> Pengaturan
-        </a>
         <a href="<?= $base_url ?>/auth/logout.php" class="btn-sidebar-footer w-100 text-danger mt-1">
             <i class="bi bi-box-arrow-right"></i> Logout
         </a>

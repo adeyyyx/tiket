@@ -22,6 +22,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             if($row['role'] === 'admin'){
                 header("Location: ../admin/index.php");
+            } elseif($row['role'] === 'petugas') {
+                header("Location: ../petugas/checkin/index.php");
             } else {
                 header("Location: ../user/index.php");
             }

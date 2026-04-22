@@ -4,6 +4,8 @@ require_once '../includes/header.php';
 if(isset($_SESSION['id_user'])){
     if($_SESSION['role'] === 'admin'){
         header("Location: ../admin/index.php");
+    } elseif($_SESSION['role'] === 'petugas'){
+        header("Location: ../petugas/checkin/index.php");
     } else {
         header("Location: ../user/index.php");
     }

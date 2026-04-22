@@ -1,6 +1,6 @@
 <?php
 require_once '../../includes/header.php';
-cek_admin();
+cek_petugas();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $kode = mysqli_real_escape_string($conn, trim(strtoupper($_POST['kode_tiket'])));
@@ -49,47 +49,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <input type="text" class="form-control form-control-lg text-center" name="kode_tiket" placeholder="Masukkan Kode Tiket (Misal: 4A8B9C)" required autocomplete="off">
                     </div>
                     <button type="submit" class="btn btn-danger btn-lg w-100">Check-in Tiket</button>
-                    <a href="../index.php" class="btn btn-secondary mt-3">Kembali ke Dashboard</a>
+                    <a href="../../index.php" class="btn btn-secondary mt-3">Kembali ke Beranda</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row mt-5">
-    <div class="col-12">
-        <h4 class="border-bottom pb-2">Riwayat Check-in Terbaru</h4>
-        <?php
-        $recent = query("SELECT a.*, o.tanggal_order, u.nama 
-                         FROM attendee a 
-                         JOIN order_detail od ON a.id_detail = od.id_detail 
-                         JOIN orders o ON od.id_order = o.id_order 
-                         JOIN users u ON o.id_user = u.id_user 
-                         WHERE a.status_checkin = 'sudah' 
-                         ORDER BY a.waktu_checkin DESC LIMIT 5");
-        ?>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Waktu Check-in</th>
-                    <th>Kode Tiket</th>
-                    <th>Nama Pembeli</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($recent as $r): ?>
-                <tr>
-                    <td><?= date('d/m/Y H:i', strtotime($r['waktu_checkin'])) ?></td>
-                    <td><span class="badge bg-secondary"><?= $r['kode_tiket'] ?></span></td>
-                    <td><?= htmlspecialchars($r['nama']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-                <?php if(count($recent) == 0): ?>
-                <tr><td colspan="3" class="text-center">Belum ada peserta yang check-in.</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
 
 <?php require_once '../../includes/footer.php'; ?>

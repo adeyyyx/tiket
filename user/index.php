@@ -2,7 +2,7 @@
 require_once '../includes/header.php';
 cek_user();
 
-$tikets = query("SELECT t.*, e.nama_event, e.tanggal, v.nama_venue 
+$tikets = query("SELECT t.*, e.nama_event, e.tanggal, e.gambar, v.nama_venue 
                  FROM tiket t 
                  JOIN event e ON t.id_event = e.id_event 
                  JOIN venue v ON e.id_venue = v.id_venue 
@@ -27,6 +27,13 @@ $tikets = query("SELECT t.*, e.nama_event, e.tanggal, v.nama_venue
     <?php foreach($tikets as $t): ?>
     <div class="col-md-4 mb-4">
         <div class="card shadow-sm h-100">
+            <?php if(!empty($t['gambar'])): ?>
+                <img src="<?= $base_url ?>/assets/images/events/<?= htmlspecialchars($t['gambar']) ?>" class="card-img-top" alt="Event Image" style="height: 180px; object-fit: cover;">
+            <?php else: ?>
+                <div class="bg-light d-flex align-items-center justify-content-center text-muted border-bottom" style="height: 180px;">
+                    <i class="bi bi-image fs-1"></i>
+                </div>
+            <?php endif; ?>
             <div class="card-body">
                 <h5 class="card-title"><?= htmlspecialchars($t['nama_event']) ?></h5>
                 <h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($t['nama_tiket']) ?></h6>

@@ -11,7 +11,7 @@ function query($query) {
 
 function cek_login() {
     if(!isset($_SESSION['id_user'])) {
-        header("Location: ../auth/login.php");
+        header("Location: /(JGN DI UBAH UBAH)/tiket/auth/login.php");
         exit;
     }
 }
@@ -19,7 +19,15 @@ function cek_login() {
 function cek_admin() {
     cek_login();
     if($_SESSION['role'] !== 'admin') {
-        echo "<script>alert('Akses Ditolak! Anda bukan admin.'); window.location='../user/index.php';</script>";
+        echo "<script>alert('Akses Ditolak! Anda bukan admin.'); window.location='/(JGN DI UBAH UBAH)/tiket/index.php';</script>";
+        exit;
+    }
+}
+
+function cek_petugas() {
+    cek_login();
+    if($_SESSION['role'] !== 'petugas') {
+        echo "<script>alert('Akses Ditolak! Anda bukan petugas.'); window.location='/(JGN DI UBAH UBAH)/tiket/index.php';</script>";
         exit;
     }
 }
@@ -27,7 +35,7 @@ function cek_admin() {
 function cek_user() {
     cek_login();
     if($_SESSION['role'] !== 'user') {
-        echo "<script>alert('Akses Ditolak! Anda bukan user biasa.'); window.location='../admin/index.php';</script>";
+        echo "<script>alert('Akses Ditolak! Anda bukan user biasa.'); window.location='/(JGN DI UBAH UBAH)/tiket/index.php';</script>";
         exit;
     }
 }

@@ -28,6 +28,7 @@ $events = query("SELECT e.*, v.nama_venue FROM event e LEFT JOIN venue v ON e.id
             <thead class="table-light">
                 <tr>
                     <th>No</th>
+                    <th>Gambar</th>
                     <th>Nama Event</th>
                     <th>Tanggal</th>
                     <th>Venue</th>
@@ -38,6 +39,13 @@ $events = query("SELECT e.*, v.nama_venue FROM event e LEFT JOIN venue v ON e.id
                 <?php $no=1; foreach($events as $e): ?>
                 <tr>
                     <td><?= $no++ ?></td>
+                    <td>
+                        <?php if(!empty($e['gambar'])): ?>
+                            <img src="<?= $base_url ?>/assets/images/events/<?= htmlspecialchars($e['gambar']) ?>" alt="Img" style="width: 50px; height: 50px; object-fit: cover;" class="rounded shadow-sm">
+                        <?php else: ?>
+                            <span class="text-muted small"><i class="bi bi-image"></i></span>
+                        <?php endif; ?>
+                    </td>
                     <td><?= htmlspecialchars($e['nama_event']) ?></td>
                     <td><?= date('d M Y', strtotime($e['tanggal'])) ?></td>
                     <td><?= htmlspecialchars($e['nama_venue'] ?? '-') ?></td>
@@ -48,7 +56,7 @@ $events = query("SELECT e.*, v.nama_venue FROM event e LEFT JOIN venue v ON e.id
                 </tr>
                 <?php endforeach; ?>
                 <?php if(count($events)==0): ?>
-                <tr><td colspan="5" class="text-center">Belum ada data event.</td></tr>
+                <tr><td colspan="6" class="text-center">Belum ada data event.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>

@@ -29,6 +29,13 @@ require_once 'includes/header.php';
     ?>
     <div class="col-md-3 mb-4">
         <div class="card shadow-sm h-100">
+            <?php if(!empty($ev['gambar'])): ?>
+                <img src="<?= $base_url ?>/assets/images/events/<?= htmlspecialchars($ev['gambar']) ?>" class="card-img-top" alt="Event Image" style="height: 150px; object-fit: cover;">
+            <?php else: ?>
+                <div class="bg-light d-flex align-items-center justify-content-center text-muted border-bottom" style="height: 150px;">
+                    <i class="bi bi-image fs-1"></i>
+                </div>
+            <?php endif; ?>
             <div class="card-body">
                 <h5 class="card-title"><?= htmlspecialchars($ev['nama_event']) ?></h5>
                 <h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($ev['nama_venue'] ?? 'TBA') ?></h6>

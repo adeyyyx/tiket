@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Apr 16, 2026 at 02:46 AM
--- Server version: 8.4.3
--- PHP Version: 8.3.30
+-- Host: 127.0.0.1
+-- Generation Time: Apr 22, 2026 at 04:48 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `attendee` (
-  `id_attendee` int NOT NULL,
-  `id_detail` int DEFAULT NULL,
+  `id_attendee` int(11) NOT NULL,
+  `id_detail` int(11) DEFAULT NULL,
   `kode_tiket` varchar(50) DEFAULT NULL,
   `status_checkin` enum('belum','sudah') DEFAULT NULL,
   `waktu_checkin` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -42,11 +42,12 @@ CREATE TABLE `attendee` (
 --
 
 CREATE TABLE `event` (
-  `id_event` int NOT NULL,
+  `id_event` int(11) NOT NULL,
   `nama_event` varchar(150) DEFAULT NULL,
   `tanggal` date DEFAULT NULL,
-  `id_venue` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id_venue` int(11) DEFAULT NULL,
+  `gambar` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -55,13 +56,13 @@ CREATE TABLE `event` (
 --
 
 CREATE TABLE `orders` (
-  `id_order` int NOT NULL,
-  `id_user` int DEFAULT NULL,
+  `id_order` int(11) NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
   `tanggal_order` datetime DEFAULT NULL,
-  `total` int DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
   `status` enum('pending','paid','cancel') DEFAULT NULL,
-  `id_voucher` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id_voucher` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -70,12 +71,12 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE `order_detail` (
-  `id_detail` int NOT NULL,
-  `id_order` int DEFAULT NULL,
-  `id_tiket` int DEFAULT NULL,
-  `qty` int DEFAULT NULL,
-  `subtotal` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id_detail` int(11) NOT NULL,
+  `id_order` int(11) DEFAULT NULL,
+  `id_tiket` int(11) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `subtotal` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -84,12 +85,12 @@ CREATE TABLE `order_detail` (
 --
 
 CREATE TABLE `tiket` (
-  `id_tiket` int NOT NULL,
-  `id_event` int DEFAULT NULL,
+  `id_tiket` int(11) NOT NULL,
+  `id_event` int(11) DEFAULT NULL,
   `nama_tiket` varchar(50) DEFAULT NULL,
-  `harga` int DEFAULT NULL,
-  `kuota` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `harga` int(11) DEFAULT NULL,
+  `kuota` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -98,12 +99,21 @@ CREATE TABLE `tiket` (
 --
 
 CREATE TABLE `users` (
-  `id_user` int NOT NULL,
+  `id_user` int(11) NOT NULL,
   `nama` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` enum('user','petugas','admin') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id_user`, `nama`, `email`, `password`, `role`) VALUES
+(1, 'Administrator', 'admin@tiket.com', '$2y$10$jBdP8jUxvVQcmSkZ4F9N4uxKOO0YjMq/A7Jrktr7hp0ge8p5yyHc.', 'admin'),
+(2, 'Petugas Tiket', 'petugas@tiket.com', '$2y$10$jBdP8jUxvVQcmSkZ4F9N4uxKOO0YjMq/A7Jrktr7hp0ge8p5yyHc.', 'petugas'),
+(3, 'Budi User', 'budi@gmail.com', '$2y$10$jBdP8jUxvVQcmSkZ4F9N4uxKOO0YjMq/A7Jrktr7hp0ge8p5yyHc.', 'user');
 
 -- --------------------------------------------------------
 
@@ -112,11 +122,11 @@ CREATE TABLE `users` (
 --
 
 CREATE TABLE `venue` (
-  `id_venue` int NOT NULL,
+  `id_venue` int(11) NOT NULL,
   `nama_venue` varchar(100) DEFAULT NULL,
-  `alamat` text,
-  `kapasitas` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `alamat` text DEFAULT NULL,
+  `kapasitas` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -125,12 +135,12 @@ CREATE TABLE `venue` (
 --
 
 CREATE TABLE `voucher` (
-  `id_voucher` int NOT NULL,
+  `id_voucher` int(11) NOT NULL,
   `kode_voucher` varchar(20) DEFAULT NULL,
-  `potongan` int DEFAULT NULL,
-  `kuota` int DEFAULT NULL,
+  `potongan` int(11) DEFAULT NULL,
+  `kuota` int(11) DEFAULT NULL,
   `status` enum('aktif','nonaktif') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -199,49 +209,49 @@ ALTER TABLE `voucher`
 -- AUTO_INCREMENT for table `attendee`
 --
 ALTER TABLE `attendee`
-  MODIFY `id_attendee` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_attendee` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id_event` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_event` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id_order` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_detail` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tiket`
 --
 ALTER TABLE `tiket`
-  MODIFY `id_tiket` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tiket` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `id_venue` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_venue` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `voucher`
 --
 ALTER TABLE `voucher`
-  MODIFY `id_voucher` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_voucher` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
