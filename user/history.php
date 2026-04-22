@@ -53,6 +53,7 @@ $histories = query("SELECT o.*, t.nama_tiket, e.nama_event, d.qty
                         <td>
                             <?php if($h['status'] == 'pending'): ?>
                                 <a href="pay.php?id=<?= $h['id_order'] ?>" class="btn btn-sm btn-primary">Bayar</a>
+                                <a href="cancel_order.php?id=<?= $h['id_order'] ?>" class="btn btn-sm btn-outline-danger ms-1" onclick="return confirm('Yakin ingin membatalkan pesanan ini? Kuota tiket akan dikembalikan.');">Batalkan</a>
                             <?php elseif($h['status'] == 'paid'): ?>
                                 <a href="my_tickets.php?id_order=<?= $h['id_order'] ?>" class="btn btn-sm btn-info text-white">Lihat E-Tiket</a>
                             <?php endif; ?>
